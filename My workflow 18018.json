@@ -1,0 +1,357 @@
+{
+  "name": "My workflow 18018",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        64
+      ],
+      "id": "ec6467cb-b7fd-499b-aeaa-4d0f8c77bf29",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://www.normaltech.ai/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "b954845e-13da-44a5-93c2-9fe023a6ce4f",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        896,
+        64
+      ],
+      "id": "c738596f-b8b3-442d-bab0-b3265fc11cb7",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1136,
+        272
+      ],
+      "id": "d5d7c5d1-ebd9-435b-9c02-8d5d0d9eac67",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Xsmh8EaFH1DmfO6K",
+          "name": "New Ai news summariser"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "sanchitlanjewar13@gmail.com",
+        "subject": "Today's Ai news",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        64
+      ],
+      "id": "083fd9ee-82f4-4dd0-b365-8f9fe379252a",
+      "name": "Send a message",
+      "webhookId": "de3435ed-b45d-4888-b1a2-049cce9031ac",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "QPu0PV9ywAH9PzpT",
+          "name": "conected gmail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.data }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an AI news summarizer assistant.\nAnalyze the news articles and create an email summary.\n\nFor each article:\nCreate a headline in ALL CAPS\nWrite a 2-3 sentence summary\nInclude the article link\n\nFormat as:\nSubject: Today's AI News\n\nHi there,\n\nHere's your AI news summary:\n\nHEADLINE IN CAPS\nSummary of what happened and why it matters...\nRead more: [link]\n\nBest regards,\nAI News Bot"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1120,
+        64
+      ],
+      "id": "04e459e8-ff33-4f3e-9232-3a814055a340",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "allam-2-7b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        0,
+        824
+      ],
+      "id": "f63e2530-3c0d-484e-8fac-2fec563ee160",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "z7c2ePGLTaC8L5ks",
+          "name": "Groq account 169"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        616
+      ],
+      "id": "b43ac11c-9991-4e12-8891-01241f58a158",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1032
+      ],
+      "id": "ad2733aa-b5c3-45a2-8bb9-b3e1caf75bbf",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "Iz1MYYgTSexkG4vN",
+          "name": "OpenRouter account 64"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -32
+      ],
+      "id": "5f2f28bb-032c-4979-b257-cb392e192ab0",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "url": "https://aibusiness.com/rss.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        160
+      ],
+      "id": "d337fa74-cd55-447a-b375-d4f1140c889c",
+      "name": "RSS Read1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        448,
+        160
+      ],
+      "id": "7a5e8444-041a-4cbf-a276-cd3146d828f7",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        672,
+        64
+      ],
+      "id": "949abef1-3626-475a-93e6-1655e96bf414",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ad577b2e-cc01-43ec-8847-d0818ab7c971",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "969257b09ad2942bbaff2e2288304f4969030574d109cdeca05bf11f630884df"
+  },
+  "id": "RGD2cJ6UAXsqhDZU",
+  "tags": []
+}
