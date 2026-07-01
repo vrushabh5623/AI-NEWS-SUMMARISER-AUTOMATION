@@ -1,3 +1,6 @@
+Sample Mail:
+
+
 Subject: Today's AI News
 
 Hi there,
